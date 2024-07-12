@@ -1,27 +1,117 @@
-# RouteNavigation
+RouterLink 
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.2.
+routerlink is used instead of href in anchor tag in html. Router link used to navigate to different urls directly in browser ( when the url specified component is registered in app.routing.module.ts).  Illustration shown as below
 
-## Development server
+app.component.html
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+<div>
+<a [routerLink]="['/login']" routerLinkActive="active">Login</a>&nbsp;
+<a [routerLink]="['/register']" routerLinkActive="active">Register</a>
+</div>
 
-## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Router LinkActive will highlight (if we give css using a class)  which component is clicked or invoked when clicking on the anchor tag 
 
-## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+app.component.scss
 
-## Running unit tests
+.active{
+color:red;
+}
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-## Further help
+Another example 
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+Instead of using routerLink and directly redirecting to that component , we want to go from  login to dashboard if a condition is satisfied . In the code below the userId and  sampleId are equal then only the router will navigate to dashboard ( using this.router.navigate(['dashboard']);   )  else it will go login page again  (  this.router.navigate(['login']);  ).
+
+
+export class AppComponent {
+userId = 1;
+constructor(private router: Router) { }
+login() {
+let sampleId = 1;
+if (this.userId === sampleId) {
+this.router.navigate(['dashboard']);
+}
+else {
+this.router.navigate(['login']);
+}
+}
+}
+
+
+
+
+
+
+app.component.html
+
+
+<div>
+<a [routerLink]="['/register']" routerLinkActive="active">Register</a>
+<button (click)="login()">Login</button>
+</div>
+<router-outlet></router-outlet>
+
+
+
+We can also give navigateByUrl  (i.e  this.router.navigateByUrl('/dashboard'); ) which will navigate to the path ( here dashboard).
+
+
+export class AppComponent {
+userId = 1;
+constructor(private router: Router) { }
+login() {
+let sampleId = 1;
+if (this.userId === sampleId) {
+this.router.navigateByUrl('/dashboard');
+}
+else {
+this.router.navigate(['login']);
+}
+}
+}
+
+
+Another example
+
+If we give 2 values in the path of app.routing.module.ts ( i.e { path: 'home/charts', component: HomeComponent }  where path is home/charts) , then navigate should be written like this ‘ this.router.navigate(['home', 'charts']);  ‘
+
+
+export class AppComponent {
+userId = 1;
+constructor(private router: Router) { }
+login() {
+let sampleId = 1;
+if (this.userId === sampleId) {
+this.router.navigate(['home', 'charts']);
+// this.router.navigateByUrl('/dashboard');
+}
+else {
+this.router.navigate(['login']);
+}
+}
+}
+
+
+
+When we use navigateByUrl and if we give 2 values in the path of app.routing.module.ts ( i.e { path: 'home/charts', component: HomeComponent }  where path is home/charts) , then navigateByUrl should be written like this ‘ this.router.navigateByUrl('/home/charts'); ‘
+
+export class AppComponent {
+userId = 1;
+constructor(private router: Router) { }
+login() {
+let sampleId = 1;
+if (this.userId === sampleId) {
+// this.router.navigate(['home', 'charts']);
+this.router.navigateByUrl('/home/charts');
+}
+else {
+this.router.navigate(['login']);
+}
+}
+}
+
